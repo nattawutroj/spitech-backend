@@ -32,17 +32,12 @@ jobs:
           node-version: '18.x'
 
       - name: npm install, build, and test
-        env:
-          DB_HOST: ${{ env.DB_HOST }}
-          DB_USERNAME: ${{ env.DB_USERNAME }}
-          DB_PASSWORD: ${{ env.DB_PASSWORD }}
-          DB_NAME: ${{ env.DB_NAME }}
-          DB_PORT: ${{ env.DB_PORT }}
-          DB_SSL: ${{ env.DB_SSL }}
         run: |
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          DB_HOST: ${{ var.DB_HOST}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -56,12 +51,13 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: node-app
+          
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
