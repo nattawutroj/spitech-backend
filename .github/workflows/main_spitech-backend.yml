@@ -37,7 +37,7 @@ jobs:
           npm run build --if-present
           npm run test --if-present
         env:
-          DB_HOST: ${{ var.DB_HOST}}
+          DB_HOST: ${{ var.DB_HOST }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
