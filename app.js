@@ -39,7 +39,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.get("/hello", (req, res) => {
-  res.send(process.env.DB_HOST);
+  console.log("hello world");
 });
 
 module.exports = app;
