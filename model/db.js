@@ -15,7 +15,7 @@ var client = new Client({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
-    ssl: process.env.DB_SSL
+    ssl: process.env.DB_SSL === 'true'
 });
 
 client.connect(function (err) {
