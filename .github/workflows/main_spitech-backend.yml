@@ -12,7 +12,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_SSL: ${{ secrets.DB_SSL }}
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -26,6 +34,13 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_NAME: ${{ env.DB_NAME }}
+          DB_PORT: ${{ env.DB_PORT }}
+          DB_SSL: ${{ env.DB_SSL }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
