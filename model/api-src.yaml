@@ -1,0 +1,4669 @@
+openapi: 3.0.0
+info:
+  title: Project API powerby Swagger
+  description: this is description
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: nattawutroj@gmail.com
+    name: Nattawut Rojchanachan
+  version: 1.0.0
+servers:
+  - url: https://spitech-backend.azurewebsites.net/
+    description: Local server
+  - url: http://localhost:3000
+    description: Local server
+tags:
+  - name: Public
+    description: API for public
+  - name: Superviser
+    description: API for superviser
+  - name: Staff
+    description: API for staff
+  - name: teacher
+    description: API for teacher
+  - name: student
+    description: API for student
+paths:
+  /login:
+    post:
+      tags:
+        - Public
+      summary: Login
+      description: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: admin
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: admin
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /role:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Role
+      description: Get Role
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Role
+      description: Create Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_title:
+                  type: string
+                  example: นักเรียน
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                role_title:
+                  type: string
+                  example: นักเรียน
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Role
+      description: Put Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 0
+                role_title:
+                  type: string
+                  example: นักเรียน
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 0
+                role_title:
+                  type: string
+                  example: นักเรียน
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Role
+      description: Delete Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /faculty:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Faculty
+      description: Get Faculty
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Faculty
+      description: Create Faculty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+                faculty_name:
+                  type: string
+                  example: ทดสอบเพิ่มคณะ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+                faculty_name:
+                  type: string
+                  example: ทดสอบเพิ่มคณะ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Faculty
+      description: Create Faculty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+                faculty_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนคณะ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+                faculty_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนคณะ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error 
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Faculty
+      description: Delete Faculty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                faculty_code:
+                  type: integer
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error   
+  /department:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Department
+      description: Get Department
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Department
+      description: Create Department
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_code:
+                  type: integer
+                  example: 0
+                department_name:
+                  type: string
+                  example: ทดสอบสร้างสาขา
+                faculty_code:
+                  type: integer
+                  example: 6
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                department_code:
+                    type: integer
+                    example: 0
+                department_name:
+                  type: string
+                  example: ทดสอบสร้างสาขา
+                faculty_code:
+                  type: integer
+                  example: 6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Department
+      description: Put Department
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_code:
+                  type: integer
+                  example: 0
+                department_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนสาขา
+                faculty_code:
+                  type: integer
+                  example: 6
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                department_code:
+                  type: integer
+                  example: 0
+                department_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนสาขา
+                faculty_code:
+                  type: integer
+                  example: 6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Department
+      description: Put Department
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                department_code:
+                  type: integer
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                department_code:
+                  type: integer
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /name_title:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Name Title
+      description: Get Name Title
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameTitle'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Name Title
+      description: Create Name Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_title_th:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าไทย
+                name_title_en:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าอังกฤษ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name_title_th:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าไทย
+                name_title_en:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าอังกฤษ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameTitle'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Name Title
+      description: Put Name Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 0
+                name_title_th:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าไทย
+                name_title_en:
+                  type: string
+                  example: ทดสอบเพิ่มคำนำหน้าอังกฤษ
+          application/x-www-form-urlencoded:
+            schema:
+             type: object
+             properties:
+              schema:
+                type: object
+                properties:
+                  id_name_title:
+                    type: integer
+                    format: int64
+                    example: 0
+                  name_title_th:
+                    type: string
+                    example: ทดสอบเพิ่มคำนำหน้าไทย
+                  name_title_en:
+                    type: string
+                    example: ทดสอบเพิ่มคำนำหน้าอังกฤษ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameTitle'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Name Title
+      description: Delete Name Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+             type: object
+             properties:
+              schema:
+                type: object
+                properties:
+                  id_name_title:
+                    type: integer
+                    format: int64
+                    example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameTitle'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /course:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Course
+      description: Get Course
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Course
+      description: Create Course
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+                course_name:
+                  type: string
+                  example: ทดสอบสร้างหลักสูตร
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+                course_name:
+                  type: string
+                  example: ทดสอบสร้างหลักสูตร
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Course
+      description: Put Course
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+                course_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนข้อมูลหลักสูตร
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+                course_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนข้อมูลหลักสูตร
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Course
+      description: Delete Course
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                course_code:
+                  type: integer
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /major:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Major
+      description: Get Major
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Major'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Major
+      description: Create Major
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+                major_name:
+                  type: string
+                  example: ทดสอบสร้างสาขา
+                department_code:
+                  type: integer
+                  example: 62
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+                major_name:
+                  type: string
+                  example: ทดสอบสร้างสาขา
+                department_code:
+                  type: integer
+                  example: 62
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Major'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Major
+      description: Put Major
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+                major_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนสาขา
+                department_code:
+                  type: integer
+                  example: 62
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+                major_name:
+                  type: string
+                  example: ทดสอบเปลี่ยนสาขา
+                department_code:
+                  type: integer
+                  example: 62
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Major'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Major
+      description: Delete Major
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                major_code:
+                  type: integer
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Major'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /semester:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Semester
+      description: Get Semester
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Semester'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Semester
+      description: Create Semester
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                semester:
+                  type: string
+                  example: 1
+                year:
+                  type: string
+                  example: 2566
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                semester:
+                  type: string
+                  example: 1
+                year:
+                  type: string
+                  example: 2566
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Semester
+      description: Put Semester
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_semester:
+                  type: integer
+                  format: int64
+                  example: 0
+                semester:
+                  type: string
+                  example: 1
+                year:
+                  type: string
+                  example: 2566
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_semester:
+                  type: integer
+                  format: int64
+                  example: 0
+                semester:
+                  type: string
+                  example: 1
+                year:
+                  type: string
+                  example: 2566
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Semester
+      description: Delete Semester
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_semester:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_semester:
+                  type: integer
+                  format: int64
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Semester'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /student:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Student
+      description: Get Student
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Student
+      description: Create Student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_code:
+                  type: integer
+                  example: 6506021421137
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                address:
+                  type: string
+                  example: บ้านเลขที่ 1 หมู่ 1 ตำบล หน้าเมือง อำเภอ เมือง จังหวัด ปราจีนบุรี
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                major_code:
+                  type: integer
+                  example: 610
+                course_code:
+                  type: integer
+                  example: 620620
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                student_code:
+                  type: integer
+                  example: 6506021421137
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                address:
+                  type: string
+                  example: บ้านเลขที่ 1 หมู่ 1 ตำบล หน้าเมือง อำเภอ เมือง จังหวัด ปราจีนบุรี
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                major_code:
+                  type: integer
+                  example: 610
+                course_code:
+                  type: integer
+                  example: 620620
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Student
+      description: Put Student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 1
+                student_code:
+                  type: integer
+                  example: 6506021421137
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                address:
+                  type: string
+                  example: บ้านเลขที่ 1 หมู่ 1 ตำบล หน้าเมือง อำเภอ เมือง จังหวัด ปราจีนบุรี
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                major_code:
+                  type: integer
+                  example: 610
+                course_code:
+                  type: integer
+                  example: 620620
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 1
+                student_code:
+                  type: integer
+                  example: 6506021421137
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                address:
+                  type: string
+                  example: บ้านเลขที่ 1 หมู่ 1 ตำบล หน้าเมือง อำเภอ เมือง จังหวัด ปราจีนบุรี
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                major_code:
+                  type: integer
+                  example: 610
+                course_code:
+                  type: integer
+                  example: 620620
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Student
+      description: Delete Student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /staff:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Staff
+      description: Get Staff
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Staff
+      description: Create Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                initials:
+                  type: string
+                  example: MSG
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                initials:
+                  type: string
+                  example: MSG
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Staff
+      description: Put Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+                username:
+                  type: string
+                  example: admin
+                initials:
+                  type: string
+                  example: MSG
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+                username:
+                  type: string
+                  example: admin
+                initials:
+                  type: string
+                  example: MSG
+                id_name_title:
+                  type: integer
+                  format: int64
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+                password:
+                  type: string
+                  example: 21232f297a57a5a743894a0e4a801fc3
+                id_role:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Staff
+      description: Delete Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /project_member:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project Member
+      description: Get Project Member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_Member'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project Member
+      description: Create Project Member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_student:
+                  type: integer
+                  format: int64
+                  example: 0
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Member'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project Member
+      description: Delete Project Member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_member:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_member:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Member'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /project:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project
+      description: Get Project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project
+      description: Create Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_title_th:
+                  type: string
+                  example: สนับสนุนโครงงานพิเศษ
+                project_title_en:
+                  type: string
+                  example: Project IT Support
+                case_study_title_th:
+                  type: string
+                  example: ภาควิชาเทคโนโลยีสารสนเทศ
+                case_study_title_en:
+                  type: string
+                  example: Information Tecnology Department
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                project_title_th:
+                  type: string
+                  example: สนับสนุนโครงงานพิเศษ
+                project_title_en:
+                  type: string
+                  example: Project IT Support
+                case_study_title_th:
+                  type: string
+                  example: ภาควิชาเทคโนโลยีสารสนเทศ
+                case_study_title_en:
+                  type: string
+                  example: Information Tecnology Department
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Project
+      description: Put Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                project_title_th:
+                  type: string
+                  example: สนับสนุนโครงงานพิเศษ
+                project_title_en:
+                  type: string
+                  example: Project IT Support
+                case_study_title_th:
+                  type: string
+                  example: ภาควิชาเทคโนโลยีสารสนเทศ
+                case_study_title_en:
+                  type: string
+                  example: Information Tecnology Department
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                project_title_th:
+                  type: string
+                  example: สนับสนุนโครงงานพิเศษ
+                project_title_en:
+                  type: string
+                  example: Project IT Support
+                case_study_title_th:
+                  type: string
+                  example: ภาควิชาเทคโนโลยีสารสนเทศ
+                case_study_title_en:
+                  type: string
+                  example: Information Tecnology Department
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project
+      description: Delete Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /project_staff_position:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project Staff Position
+      description: Get Project Staff Position
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_Staff_Position'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project Staff Position
+      description: Create Project Staff Position
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_staff_position_title:
+                  type: string
+                  example: ที่ปรึกษา
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                project_staff_position_title:
+                  type: string
+                  example: ที่ปรึกษา
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Staff_Position'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Project Staff Position
+      description: Put Project Staff Position
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_staff_position_title:
+                  type: string
+                  example: ที่ปรึกษา
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                project_staff_position_title:
+                  type: string
+                  example: ที่ปรึกษา
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Staff_Position'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project Staff Position
+      description: Delete Project Staff Position
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_staff_position:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_staff_position:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Staff_Position'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /project_staff:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project Staff
+      description: Get Project Staff
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project Staff
+      description: Create Project Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_project_staff_position:
+                  type: integer
+                  format: int64
+                  example: 0
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_staff:
+                  type: integer
+                  format: int64
+                  example: 0
+                id_project_staff_position:
+                  type: integer
+                  format: int64
+                  example: 0
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project Staff
+      description: Delete Project Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_staff:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_staff:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /project_os_staff:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project OS Staff
+      description: Get Project OS Staff
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_OS_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project OS Staff
+      description: Create Project OS Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_staff_position:
+                  type: integer
+                  example: 1
+                id_name_title:
+                  type: integer
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_staff_position:
+                  type: integer
+                  example: 1
+                id_name_title:
+                  type: integer
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_OS_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Project OS Staff
+      description: Put Project OS Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_os_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_staff_position:
+                  type: integer
+                  example: 1
+                id_name_title:
+                  type: integer
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_os_staff:
+                  type: integer
+                  format: int64
+                  example: 1
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_staff_position:
+                  type: integer
+                  example: 1
+                id_name_title:
+                  type: integer
+                  example: 1
+                first_name_th:
+                  type: string
+                  example: ณัฐวุฒิ
+                last_name_th:
+                  type: string
+                  example: โรจนจันทร์
+                first_name_en:
+                  type: string
+                  example: NATTAWUT
+                last_name_en:
+                  type: string
+                  example: ROJCHANACHAN
+                phone:
+                  type: string
+                  example: 0884877440
+                email:
+                  type: string
+                  example: nattawutroj@gmail.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_OS_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project OS Staff
+      description: Delete Project OS Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_os_staff:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_os_staff:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_OS_Staff'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /news:
+    get:
+      tags:
+        - Public
+      summary: Get News
+      description: Get News
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create News
+      description: Create News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                logo_path:
+                  type: string
+                  example: /uploads/1620150000000.png
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                arctical:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                id_staff:
+                  type: integer
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                logo_path:
+                  type: string
+                  example: /uploads/1620150000000.png
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                arctical:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                id_staff:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put News
+      description: Put News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_news:
+                  type: integer
+                  format: int64
+                logo_path:
+                  type: string
+                  example: /uploads/1620150000000.png
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                arctical:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                id_staff:
+                  type: integer
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_news:
+                  type: integer
+                  format: int64
+                logo_path:
+                  type: string
+                  example: /uploads/1620150000000.png
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                arctical:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                id_staff:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete News
+      description: Delete News
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_news:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_news:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+  /download_library:
+    get:
+      tags:
+        - Public
+      summary: Get Download Library
+      description: Get Download Library
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Download_Library'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Download Library
+      description: Create Download Library
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                build_timestamp:
+                  type: string
+                  format: date-time
+                id_staff:
+                  type: integer
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                build_timestamp:
+                  type: string
+                  format: date-time
+                id_staff:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Download_Library'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Download Library
+      description: Put Download Library
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_download_library:
+                  type: integer
+                  format: int64
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                build_timestamp:
+                  type: string
+                  format: date-time
+                id_staff:
+                  type: integer
+                  example: 1
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_download_library:
+                  type: integer
+                  format: int64
+                topic:
+                  type: string
+                  example: ข่าวสาร
+                file_path:
+                  type: string
+                  example: /uploads/1620150000000.pdf
+                build_timestamp:
+                  type: string
+                  format: date-time
+                id_staff:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Download_Library'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Download Library
+      description: Delete Download Library
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_download_library:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_download_library:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Download_Library'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable Entity
+  /log_project:
+    get:
+      tags:
+        - รอดำเนินการเพิ่มเติม
+      summary: Get Log Project
+      description: Get Log Project
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Log_Project'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+  /test_category:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Test Category
+      description: Get Test Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test_Category'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Test Category
+      description: Create Test Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                test_category_title:
+                  type: string
+                  example: ทดสอบ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                test_category_title:
+                  type: string
+                  example: ทดสอบ
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test_Category'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Test Category
+      description: Put Test Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_test_category:
+                  type: integer
+                  format: int64
+                test_category_title:
+                  type: string
+                  example: ทดสอบ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_test_category:
+                  type: integer
+                  format: int64
+                test_category_title:
+                  type: string
+                  example: ทดสอบ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test_Category'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Test Category
+      description: Delete Test Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_test_category:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_test_category:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test_Category'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /room:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Room
+      description: Get Room
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Room
+      description: Create Room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                room_title:
+                  type: string
+                  example: ห้องประชุม
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                room_title:
+                  type: string
+                  example: ห้องประชุม
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Room
+      description: Put Room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_room:
+                  type: integer
+                  format: int64
+                room_title:
+                  type: string
+                  example: ห้องประชุม
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_room:
+                  type: integer
+                  format: int64
+                room_title:
+                  type: string
+                  example: ห้องประชุม
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Room
+      description: Delete Room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_room:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_room:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /schedule:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Schedule
+      description: Get Schedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Schedule
+      description: Create Schedule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_test_category:
+                  type: integer
+                  example: 1
+                id_room:
+                  type: integer
+                  example: 1
+                datetime_start:
+                  type: string
+                  format: date-time
+                datetime_end:
+                  type: string
+                  format: date-time
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_test_category:
+                  type: integer
+                  example: 1
+                id_room:
+                  type: integer
+                  example: 1
+                datetime_start:
+                  type: string
+                  format: date-time
+                datetime_end:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity'
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Schedule
+      description: Put Schedule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_schedule:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                id_test_category:
+                  type: integer
+                  example: 1
+                id_room:
+                  type: integer
+                  example: 1
+                datetime_start:
+                  type: string
+                  format: date-time
+                datetime_end:
+                  type: string
+                  format: date-time
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_schedule:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                id_test_category:
+                  type: integer
+                  example: 1
+                id_room:
+                  type: integer
+                  example: 1
+                datetime_start:
+                  type: string
+                  format: date-time
+                datetime_end:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '422':
+          description: Unprocessable Entity'
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Schedule
+      description: Delete Schedule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_schedule:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_schedule:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /status_document:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Status Document
+      description: Get Status Document
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status_Document'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        422:
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Status Document
+      description: Create Status Document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status_document_title:
+                  type: string
+                  example: รออนุมัติ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                status_document_title:
+                  type: string
+                  example: รออนุมัติ
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status_Document'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Status Document
+      description: Put Status Document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_status_document:
+                  type: integer
+                  format: int64
+                status_document_title:
+                  type: string
+                  example: รออนุมัติ
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_status_document:
+                  type: integer
+                  format: int64
+                status_document_title:
+                  type: string
+                  example: รออนุมัติ
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status_Document'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Status Document
+      description: Delete Status Document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_status_document:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_status_document:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status_Document'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /project_status_title:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project Status Title
+      description: Get Project Status Title
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_Status_Title'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project Status Title
+      description: Create Project Status Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_status_title:
+                  type: string
+                  example: รอการอนุมัติ
+                document_boolean:
+                  type: boolean
+                  example: true
+                document_title:
+                  type: string
+                  example: ทก.01.pdf
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                project_status_title:
+                  type: string
+                  example: รอการอนุมัติ
+                document_boolean:
+                  type: boolean
+                  example: true
+                document_title:
+                  type: string
+                  example: ทก.01.pdf
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status_Title'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Project Status Title
+      description: Put Project Status Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_status_title:
+                  type: integer
+                  format: int64
+                project_status_title:
+                  type: string
+                  example: รอการอนุมัติ
+                document_boolean:
+                  type: boolean
+                  example: true
+                document_title:
+                  type: string
+                  example: ทก.01.pdf
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_status_title:
+                  type: integer
+                  format: int64
+                project_status_title:
+                  type: string
+                  example: รอการอนุมัติ
+                document_boolean:
+                  type: boolean
+                  example: true
+                document_title:
+                  type: string
+                  example: ทก.01.pdf
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status_Title'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project Status Title
+      description: Delete Project Status Title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_status_title:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_status_title:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status_Title'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /project_status:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Project Status
+      description: Get Project Status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project_Status'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Project Status
+      description: Create Project Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_status_title:
+                  type: integer
+                  example: 1
+                status_alert:
+                  type: integer
+                status_boolean:
+                  type: boolean
+                  example: true
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_status_title:
+                  type: integer
+                  example: 1
+                status_alert:
+                  type: integer
+                status_boolean:
+                  type: boolean
+                  example: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Project Status
+      description: Put Project Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_status:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_status_title:
+                  type: integer
+                  example: 1
+                status_alert:
+                  type: integer
+                status_boolean:
+                  type: boolean
+                  example: true
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_status:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                id_project_status_title:
+                  type: integer
+                  example: 1
+                status_alert:
+                  type: integer
+                status_boolean:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Project Status
+      description: Delete Project Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project_status:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project_status:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_Status'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+  /document_autofill:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Get Document Autofill
+      description: Get Document Autofill
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document_Autofill'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Create Document Autofill
+      description: Create Document Autofill
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                text:
+                  type: string
+                  example: ข้อมูล   
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_project:
+                  type: integer
+                  example: 1
+                text:
+                  type: string
+                  example: ข้อมูล
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document_Autofill'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Put Document Autofill
+      description: Put Document Autofill
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_document_autofill:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                text:
+                  type: string
+                  example: ข้อมูล
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_document_autofill:
+                  type: integer
+                  format: int64
+                id_project:
+                  type: integer
+                  example: 1
+                text:
+                  type: string
+                  example: ข้อมูล
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document_Autofill'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Superviser
+      summary: Delete Document Autofill
+      description: Delete Document Autofill
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_document_autofill:
+                  type: integer
+                  format: int64
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_document_autofill:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document_Autofill'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Faculty:
+      type: object
+      properties:
+        faculty_code:
+          type: integer
+          example: 6
+        faculty_name:
+          type: string
+          example: คณะเทคโนโลยีและการจัดการอุตสาหกรรม
+    Department:
+      type: object
+      properties:
+        department_code:
+          type: integer
+          example: 62
+        department_name:
+          type: string
+          example: เทคโนโลยีสารสนเทศ
+        faculty_code:
+          type: integer
+          example: 6
+    NameTitle:
+      type: object
+      properties:
+        id_name_title:
+          type: integer
+          format: int64
+          example: 0
+        name_title:
+          type: string
+          example: นาย
+    Course:
+      type: object
+      properties:
+        course_code:
+          type: integer
+          example: 620620
+        course_name:
+          type: string
+          example: อุตสาหกรรมศาสตรบัณฑิต
+    Major:
+      type: object
+      properties:
+        major_code:
+          type: integer
+          example: 610
+        major_name:
+          type: string
+          example: เทคโนโลยีสารสนเทศ(ต่อเนื่อง)
+        department_code:
+          type: integer
+          example: 62
+    Semester:
+      type: object
+      properties:
+        id_semester:
+          type : integer
+          format: int64
+        semester:
+          type: string
+          example: 1
+        year:
+          type: string
+          example: 2566
+    Student:
+      type: object
+      properties:
+        id_student:
+          type: integer
+          format: int64
+          example: 1
+        student_code:
+          type: integer
+          example: 6506021421137
+        id_name_title:
+          type: integer
+          format: int64
+          example: 1
+        first_name_th:
+          type: string
+          example: ณัฐวุฒิ
+        last_name_th:
+          type: string
+          example: โรจนจันทร์
+        first_name_en:
+          type: string
+          example: NATTAWUT
+        last_name_en:
+          type: string
+          example: ROJCHANACHAN
+        phone:
+          type: string
+          example: 0884877440
+        address:
+          type: string
+          example: บ้านเลขที่ 1 หมู่ 1 ตำบล หน้าเมือง อำเภอ เมือง จังหวัด ปราจีนบุรี
+        email:
+          type: string
+          example: nattawutroj@gmail.com
+        major_code:
+          type: integer
+          example: 610
+        course_code:
+          type: integer
+          example: 620620
+        password:
+          type: string
+          example: 21232f297a57a5a743894a0e4a801fc3
+    Staff:
+      type: object
+      properties:
+        id_staff:
+          type: integer
+          format: int64
+        username:
+          type: string
+          example: admin
+        initials:
+          type: string
+          example: MSG
+        id_name_title:
+          type: integer
+          format: int64
+          example: 1
+        first_name_th:
+          type: string
+          example: ณัฐวุฒิ
+        last_name_th:
+          type: string
+          example: โรจนจันทร์
+        first_name_en:
+          type: string
+          example: NATTAWUT
+        last_name_en:
+          type: string
+          example: ROJCHANACHAN
+        phone:
+          type: string
+          example: 0884877440
+        email:
+          type: string
+          example: nattawutroj@gmail.com
+        password:
+          type: string
+          example: 21232f297a57a5a743894a0e4a801fc3
+        id_role:
+          type: integer
+          format: int64
+          example: 1
+    Project:
+      type: object
+      properties:
+        id_project:
+          type: integer
+          format: int64
+        project_title_th:
+          type: string
+          example: สนับสนุนโครงงานพิเศษ
+        project_title_en:
+          type: string
+          example: Project IT Support
+        case_study_title_th:
+          type: string
+          example: ภาควิชาเทคโนโลยีสารสนเทศ
+        case_study_title_en:
+          type: string
+          example: Information Tecnology Department
+        build_timestamp:
+          type: string
+          example: 2021-05-01 00:00:00
+        id_semester:
+          type: integer
+          format: int64
+          example: 1
+    Project_Member:
+      type: object
+      properties:
+        id_project_member:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        id_student:
+          type: integer
+          example: 1
+    Project_Staff_Position:
+      type: object
+      properties:
+        id_project_staff_position:
+          type: integer
+          format: int64
+        project_staff_position_title:
+          type: string
+          example: ที่ปรึกษา
+    Project_Staff:
+      type: object
+      properties:
+        id_project_staff:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        id_staff:
+          type: integer
+          example: 1
+        id_project_staff_position:
+          type: integer
+          example: 1
+    Project_OS_Staff:
+      type: object
+      properties:
+        id_project_os_staff:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        id_project_staff_position:
+          type: integer
+          example: 1
+        id_name_title:
+          type: integer
+          example: 1
+        first_name_th:
+          type: string
+          example: ณัฐวุฒิ
+        last_name_th:
+          type: string
+          example: โรจนจันทร์
+        first_name_en:
+          type: string
+          example: NATTAWUT
+        last_name_en:
+          type: string
+          example: ROJCHANACHAN
+        phone:
+          type: string
+          example: 0884877440
+        email:
+          type: string
+          example: nattawutroj@gmail.com
+    News:
+      type: object
+      properties:
+        id_news:
+          type: integer
+          format: int64
+        logo_path:
+          type: string
+          example: /uploads/1620150000000.png
+        topic:
+          type: string
+          example: ข่าวสาร
+        arctical:
+          type: string
+          example: ข่าวสาร
+        file_path:
+          type: string
+          example: /uploads/1620150000000.pdf
+        build_timestamp:
+          type: string
+          format: date-time
+        id_staff:
+          type: integer
+          example: 1
+    Download_Library:
+      type: object
+      properties:
+        id_download_library:
+          type: integer
+          format: int64
+        topic:
+          type: string
+          example: ข่าวสาร
+        file_path:
+          type: string
+          example: /uploads/1620150000000.pdf
+        build_timestamp:
+          type: string
+          format: date-time
+        id_staff:
+          type: integer
+          example: 1
+    Log_Project:
+      type: object
+      properties:
+        id_log_project:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        log_timestamp:
+          type: string
+          format: date-time
+        detail:
+          type: string
+          example: ข้อมูล
+    Test_Category:
+      type: object
+      properties:
+        id_test_category:
+          type: integer
+          format: int64
+        test_category_title:
+          type: string
+          example: ทดสอบ
+    Room:
+      type: object
+      properties:
+        id_room:
+          type: integer
+          format: int64
+        room_title:
+          type: string
+          example: ห้องปฏิบัติการคอมพิวเตอร์
+    Schedule:
+      type: object
+      properties:
+        id_schedule:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        id_test_category:
+          type: integer
+          example: 1
+        id_room:
+          type: integer
+          example: 1
+        datetime_start:
+          type: string
+          format: date-time
+        datetime_end:
+          type: string
+          format: date-time
+    Status_Document:
+      type: object
+      properties:
+        id_status_document:
+          type: integer
+          format: int64
+        status_document_title:
+          type: string
+          example: รอการอนุมัติ
+    Project_Status_Title:
+      type: object
+      properties:
+        id_project_status_title:
+          type: integer
+          format: int64
+        project_status_title:
+          type: string
+          example: รอการอนุมัติ
+        document_boolean:
+          type: boolean
+          example: true
+        document_title:
+          type: string
+          example: ทก.01.pdf
+    Project_Status:
+      type: object
+      properties:
+        id_project_status:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        id_project_status_title:
+          type: integer
+          example: 1
+        status_alert:
+          type: integer
+        status_boolean:
+          type: boolean
+          example: true
+        status_timestamp:
+          type: string
+          format: date-time
+    Project_Document:
+      type: object
+      properties:
+        id_project_document:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        document_title:
+          type: integer
+          example: 1
+        document_path:
+          type: string
+          example: /uploads/1620150000000.pdf
+        id_status_document:
+          type: integer
+          example: 1
+        comment:
+          type: string
+          example: ข้อมูล
+    Document_Autofill:
+      type: object
+      properties:
+        id_document_autofill:
+          type: integer
+          format: int64
+        id_project:
+          type: integer
+          example: 1
+        text:
+          type: string
+          example: ข้อมูล    
+    Role:
+      type: object
+      properties:
+        id_role:
+          type: integer
+          format: int64
+        role_title:
+          type: string
+          example: นักเรียน
+
+security:
+  - bearerAuth: []
