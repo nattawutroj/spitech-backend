@@ -12,8 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: 'Production'
     
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +20,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
-
+        
       - name: npm install, build, and test
         run: |
           npm install
@@ -47,7 +45,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-
+          
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
