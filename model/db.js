@@ -802,6 +802,7 @@ function project_info(data, callback) {
     );
 }
 
+
 function project_leave(data, callback) {
     client.query(`DELETE FROM public."Project_Member" WHERE id_project_member = '${data.body.id_project_member}'`, (err, result) => {
         if (err) callback(422)

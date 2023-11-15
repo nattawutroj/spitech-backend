@@ -1,32 +1,17 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-var bodyParser = require('body-parser')
+var express = require('express');
+var router = express.Router();
+var jwt = require('../model/jwt')
+var db = require('../model/db')
+var cyp = require('../model/crypto')
+var model = require('../model/model')
 var multer = require('multer')
-const cyp = require('../model/crypto')
-const model = require('../model/model')
-const db = require('../model/db')
-const jwt = require('../model/jwt')
-const swaggerUi = require("swagger-ui-express");
-const YAML = require('yamljs');
-const path = require('path');
-const exp = require('constants')
-const swaggerDocument = YAML.load(path.join(__dirname, '../model/api-src.yaml'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+const fs = require('fs')
+const upload = multer({ dest: 'tem_file_upload/' })
+router.use(upload.any())
 
-var upload = multer()
-
-app.set('view engine', 'pug')
-app.set('views', '.view')
-app.use(upload.array())
-app.use(express.static('public'))
-
-app.use('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
     db.login(req.body.user, req.body.password, (result) => {
-        if(result.length == 1){
+        if (result.length == 1) {
             res.json(
                 {
                     token: jwt.gen(result[0]),
@@ -39,7 +24,7 @@ app.use('/login', (req, res, next) => {
             )
         } else {
             db.loginstd(req.body.user, req.body.password, (result) => {
-                if(result.length == 1){
+                if (result.length == 1) {
                     res.json(
                         {
                             token: jwt.gen(result[0]),
@@ -51,114 +36,151 @@ app.use('/login', (req, res, next) => {
                         }
                     )
                 } else {
-                    next()
-                }
-            })
-        }
-    })
-})
-
-app.post('/login', (req, res, next) =>{
-    db.login(req.body.user, cyp.encode(req.body.password), (result) => {
-        if(result.length == 1){
-            res.json(
-                {
-                    token: jwt.gen(result[0]),
-                    data: result[0]
-                }
-            )
-        } else {
-            db.loginstd(req.body.user, cyp.encode(req.body.password), (result) => {
-                if(result.length == 1){
-                    res.json(
-                        {
-                            token: jwt.gen(result[0]),
-                            data: result[0]
+                    db.login(req.body.user, cyp.encode(req.body.password), (result) => {
+                        if (result.length == 1) {
+                            res.json(
+                                {
+                                    token: jwt.gen(result[0]),
+                                    data: result[0]
+                                }
+                            )
+                        } else {
+                            db.loginstd(req.body.user, cyp.encode(req.body.password), (result) => {
+                                if (result.length == 1) {
+                                    res.json(
+                                        {
+                                            token: jwt.gen(result[0]),
+                                            data: result[0]
+                                        }
+                                    )
+                                } else {
+                                    res.status(401).send('login failed')
+                                }
+                            })
                         }
-                    )
-                } else {
-                    res.status(401).send('login failed')
+                    })
                 }
             })
         }
     })
 })
 
-app.put('/login/change', (req, res, next) => {
+router.put('/login/change', (req, res, next) => {
     jwt.verify(req.headers.authorization, (result) => {
         req.verify = result
         req.body.new_password = cyp.encode(req.body.new_password)
-        if(Object.keys(req.verify.data)[0] == 'id_student') {
+        if (Object.keys(req.verify.data)[0] == 'id_student') {
             db.changePasswordStd(req, (result) => {
-                result == 422 ? model.error422(res) : res.json(result)
+                result == 422 ? model.error422(res) : res.status(200).send('OK')
             })
         }
-        else if(Object.keys(req.verify.data)[0] == 'id_staff') {
+        else if (Object.keys(req.verify.data)[0] == 'id_staff') {
             db.changePasswordSaff(req, (result) => {
-                result == 422 ? model.error422(res) : res.json(result)
+                result == 422 ? model.error422(res) : res.status(200).send('OK')
             })
         }
     })
 })
 
-app.post('/resources/project/init', (req, res) => {
+
+
+router.post('/resources/project/init', (req, res) => {
     jwt.verify(req.headers.authorization, (result) => {
         req.verify = result
         db.project_init(req, (result) => {
-            result == 422 ? model.error422(res) : res.json(result)
+            result == 422 ? model.error422(res) : res.status(200).send('OK')
         })
     })
 })
-app.post('/resources/project/join', (req, res) => {
+router.post('/resources/project/join', (req, res) => {
     jwt.verify(req.headers.authorization, (result) => {
         req.verify = result
         db.project_join(req, (result) => {
-            result == 422 ? model.error422(res) : res.json(result)
+            result == 422 ? model.error422(res) : res.status(200).send('OK')
         })
     })
 })
-app.get('/resources/project/info', (req, res) => {
+router.get('/resources/project/info', (req, res) => {
     jwt.verify(req.headers.authorization, (result) => {
         req.verify = result
         db.project_info(req, (result) => {
-            result == 422 ? model.error422(res) : res.json(result)
+            result == 422 ? model.error422(res) : res.status(200).send('OK')
         })
     })
 })
 
-app.delete('/resources/project/leave', (req, res) => {
+router.delete('/resources/project/leave', (req, res) => {
     jwt.verify(req.headers.authorization, (result) => {
         req.verify = result
         db.project_leave(req, (result) => {
-            result == 422 ? model.error422(res) : res.json(result)
+            result == 422 ? model.error422(res) : res.status(200).send('OK')
         })
     })
+})
+
+router.post('/resources/news/upload', (req, res) => {
+    jwt.verify(req.headers.authorization, (result) => {
+        req.verify = result
+        // only jpg png file
+        // only 1 file
+        if (req.files[0].mimetype != 'image/jpeg' && req.files[0].mimetype != 'image/png') {
+            fs.unlink(req.files[0].path, (err) => {
+                if (err) throw err;
+                console.log('successfully deleted ' + req.files[0].path);
+            }
+            )
+            model.error422(res)
+        }
+        else {
+            var oldPath = req.files[0].path;
+            var newPath = 'public/upload/news/' + req.files[0].filename + req.files[0].originalname;
+            console.log(req.files[0].filename)
+            fs.rename(oldPath, newPath, function (err) {
+                if (err) throw err
+                console.log('Successfully renamed - AKA moved!')
+            })
+            res.status(200).send('upload success')
+        }
+    })
+})
+
+router.get('/checker/expired', (req, res) => {
+    jwt.verify(req.headers.authorization, (result) => {
+        req.verify = result
+        if(req.verify == 2){
+            res.status(401).send({status:'token expired',code:401})
+        }
+        else{
+            res.send({status:'token ok',code:200,result})
+        }
+    })
+    // console.log(req)
 })
 
 
 model.resourceNames.forEach((resourceName) => {
-    app.use(`/${resourceName.toLowerCase()}`, model.verify)
+    router.use(`/${resourceName.toLowerCase()}`, model.verify)
 
-    app.get(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.get(`/${resourceName.toLowerCase()}`, (req, res) => {
         console.log(resourceName + ' get')
         db.get(resourceName, (result) => {
-            result == 422 ? model.error422(res) : res.json(result)
+            result == 422 ? model.error422(res) : res.status(200).send('OK')
         });
     });
 
-    app.post(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.post(`/${resourceName.toLowerCase()}`, (req, res) => {
         model.handleCrudOperation(req, res, resourceName, db.post);
     });
 
-    app.put(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.put(`/${resourceName.toLowerCase()}`, (req, res) => {
         model.handleCrudOperation(req, res, resourceName, db.update);
     });
 
-    app.delete(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.delete(`/${resourceName.toLowerCase()}`, (req, res) => {
         console.log(resourceName + ' delete' + req.body)
         model.handleCrudOperation(req, res, resourceName, db.del);
     });
 
 });
 
-exports.app = app
+module.exports = router;

@@ -3,7 +3,7 @@ const secretKey = 'ITProject'
 
 function gentoken(payload) {
     return jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60*60*60),  
+        exp: Math.floor(Date.now() / 1000) + (60*60*60),
         data: payload
       },  secretKey);
 }
@@ -11,6 +11,7 @@ function gentoken(payload) {
 function verify(token, proof) {
     try {
         var decoded = jwt.verify(token.slice(7), secretKey)
+        console.log(decoded)
         proof(decoded)
     } catch(err) {
         proof(2)
