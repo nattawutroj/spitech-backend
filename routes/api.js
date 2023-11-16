@@ -159,24 +159,25 @@ router.get('/checker/expired', (req, res) => {
 
 
 model.resourceNames.forEach((resourceName) => {
-    router.use(`/${resourceName.toLowerCase()}`, model.verify)
+    router.use(`/resources/${resourceName.toLowerCase()}`, model.verify)
 
-    router.get(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.get(`/resources/${resourceName.toLowerCase()}`, (req, res) => {
         console.log(resourceName + ' get')
         db.get(resourceName, (result) => {
-            result == 422 ? model.error422(res) : res.status(200).send('OK')
+            result == 422 ? model.error422(res) : res.status(200).send({ status: 'OK', result })
         });
     });
 
-    router.post(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.post(`/resources/${resourceName.toLowerCase()}`, (req, res) => {
+        console.log(req.body)
         model.handleCrudOperation(req, res, resourceName, db.post);
     });
 
-    router.put(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.put(`/resources/${resourceName.toLowerCase()}`, (req, res) => {
         model.handleCrudOperation(req, res, resourceName, db.update);
     });
 
-    router.delete(`/${resourceName.toLowerCase()}`, (req, res) => {
+    router.delete(`/resources/${resourceName.toLowerCase()}`, (req, res) => {
         console.log(resourceName + ' delete' + req.body)
         model.handleCrudOperation(req, res, resourceName, db.del);
     });
