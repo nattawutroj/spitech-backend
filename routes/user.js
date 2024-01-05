@@ -6,6 +6,7 @@ var cyp = require('../lib/crypto')
 var cto = require('../lib/cto')
 
 app.post('/login', (req, res) => {
+    console.log(req.body)
     db.login(req.body.user, req.body.password, (result) => {
         if (result.length == 1) {
             res.json(
@@ -27,7 +28,7 @@ app.post('/login', (req, res) => {
                             data: {
                                 name: result[0].first_name_th,
                                 surname: result[0].last_name_th,
-                                id_role: "10"
+                                id_role: "11"
                             }
                         }
                     )
@@ -82,5 +83,13 @@ app.put('/change', (req, res) => {
 app.get('/profile', (req, res) => {
     console.log(req)
     cto.o200(res, req.result)
+})
+
+app.put('/profile', (req, res) => {
+    console.log(req.body)
+    db.updatestudent(req.body, (result) => {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
 })
 module.exports = app;

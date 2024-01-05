@@ -10,15 +10,8 @@ const { count } = require('console')
 
 
 app.post('/upload/csv', (req, res) => {
-    if (req.files[0].mimetype != 'text/csv') {
-        fs.unlink(req.files[0].path, (err) => {
-            if (err) throw err;
-            console.log('successfully deleted ' + req.files[0].path);
-        }
-        )
-        model.error422(res)
-    }
-    else {
+    console.log(req.files[0])
+    if (req.files[0].mimetype == 'text/csv') {
         var oldPath = req.files[0].path;
         console.log(oldPath)
         const csv = require('csv-parser');
@@ -75,6 +68,87 @@ app.post('/upload/csv', (req, res) => {
                     res.status(200).send({ status: 'OK', code: 200, data })
                 })
             });
+    }
+    else if (req.files[0].mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        var oldPath = req.files[0].path;
+        console.log(oldPath)
+
+        let data = []
+        let value = []
+        
+        var XLSX = require('xlsx')
+        var workbook = XLSX.readFile(oldPath);
+        var sheet_name_list = workbook.SheetNames;
+        var results = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+
+        results.forEach(element => {
+            var drop = false
+            var l = 0
+            for (var key in element) {
+                for (var t in element[key]) {
+                    if (element[key][t] == '-') {
+                        l = l + 1
+                        element[key] = element[key].replace('-', '')
+                    }
+                    else if (element[key][t] == ':' || element[key][t] == '/') {
+                        
+                        console.log('found :  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+                        drop = true
+                    }
+                }
+                console.log(l)
+                console.log(drop)
+
+            }
+            if (l >= 2 && drop == false) {
+                data.push({
+                    '0': element['__EMPTY'],
+                    '1': element['__EMPTY_2'],
+                    '2': element['__EMPTY_4'],
+                    '3': element['__EMPTY_5'],
+                    '4': element['__EMPTY_8'],
+                    '5': element['__EMPTY_10'],
+                    '6': '',
+                    '7': '',
+                })
+            }
+            console.log('-----------------------------------')
+            
+        });
+
+        fs.unlink(req.files[0].path, (err) => {
+            if (err) throw err;
+            console.log('successfully deleted ' + req.files[0].path);
+        })
+        console.log(data);
+        async function check(elements) {
+            await Promise.all(elements.map(async (element) => {
+                return new Promise(resolve => {
+                    db.preaddstudent(element[1], (results) => {
+                        console.log(results)
+                        if (results[0] == undefined) {
+                            element[8] = false;
+                        } else {
+                            element[8] = true;
+                        }
+                        value.push(element);
+                        resolve();
+                    });
+                });
+            }));
+        }
+        check(data).then(() => {
+            console.log(value)
+            res.status(200).send({ status: 'OK', code: 200, data })
+        })
+    }
+    else {
+        fs.unlink(req.files[0].path, (err) => {
+            if (err) throw err;
+            console.log('successfully deleted ' + req.files[0].path);
+        }
+        )
+        cto.e422(res)
     }
 
 })
