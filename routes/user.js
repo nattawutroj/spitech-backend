@@ -93,6 +93,16 @@ app.put('/profile', (req, res) => {
     })
 })
 
+app.get('/projectinfo', (req, res) => {
+    var build = {
+        id_student: req.result.id_student
+    }
+    db.projectInfo(build, (result) => {
+        debug(result)
+        cto.o200(res, result)
+    })
+})
+
 app.post('/build', (req, res) => {
     db.selectSemester((result) => {
         db.projectCodeBuild(result[0].id_semester, (rowCount) => {
@@ -128,7 +138,7 @@ app.post('/join', (req, res) => {
     })
 })
 
-app.get('/join', (req, res) => {
+app.post('/checkjoin', (req, res) => {
     var build = {
         id_project: req.body.id_project,
         id_student: req.result.id_student
@@ -138,6 +148,23 @@ app.get('/join', (req, res) => {
         result == 422 ? cto.e422(res) : result == 400 ? cto.e400(res) : cto.o200(res,result.rows)
     })
 })
+
+app.delete('/join', (req, res) => {
+    var build = {
+        id_project: req.body.params.id_project,
+        id_student: req.result.id_student
+    }
+    db.projectLeave(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : result == 400 ? cto.e400(res) : cto.o200(res)
+    })
+})
+
+app.post('/dummy', (req, res) => {
+    debug(req.body.params.id_project)
+    cto.o200(res)
+})
+
 module.exports = app;
 
 Number.prototype.pad = function (size) {
