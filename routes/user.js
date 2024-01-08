@@ -93,6 +93,16 @@ app.put('/profile', (req, res) => {
     })
 })
 
+app.get('/projectinfo', (req, res) => {
+    var build = {
+        id_student: req.result.id_student
+    }
+    db.projectInfo(build, (result) => {
+        debug(result)
+        cto.o200(res, result)
+    })
+})
+
 app.post('/build', (req, res) => {
     db.selectSemester((result) => {
         db.projectCodeBuild(result[0].id_semester, (rowCount) => {
