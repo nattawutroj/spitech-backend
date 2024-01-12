@@ -145,7 +145,7 @@ app.post('/checkjoin', (req, res) => {
     }
     db.projectCheck(build, (result) => {
         debug(result)
-        result == 422 ? cto.e422(res) : result == 400 ? cto.e400(res) : cto.o200(res,result.rows)
+        result == 422 ? cto.e422(res) : result == 400 ? cto.e400(res) : cto.o200(res, result.rows)
     })
 })
 
@@ -157,6 +157,42 @@ app.delete('/join', (req, res) => {
     db.projectLeave(build, (result) => {
         debug(result)
         result == 422 ? cto.e422(res) : result == 400 ? cto.e400(res) : cto.o200(res)
+    })
+})
+
+app.get('/stafflist', (req, res) => {
+    console.log(req.body)
+    db.getStaff((result) => {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.post('/staffos', (req, res) => {
+    var build = {
+        id_project: req.body.id_project,
+        id_project_staff_position: req.body.id_project_staff_position,
+        id_name_title: req.body.id_name_title,
+        first_name_th: req.body.first_name_th,
+        last_name_th: req.body.last_name_th,
+        first_name_en: req.body.first_name_en,
+        last_name_en: req.body.last_name_en,
+        phone: req.body.phone,
+        email: req.body.email
+    }
+    db.postStaffOS(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.post('/projectstafflist', (req, res) => {
+    var build = {
+        id_project: req.body.id_project,
+    }
+    db.getprojectstaff(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
 })
 
