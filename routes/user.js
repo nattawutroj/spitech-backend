@@ -240,6 +240,18 @@ app.delete('/dummy', (req, res) => {
     debug(req.body.params.id_project)
     cto.o200(res)
 })
+
+app.put('/initalcomfirm', (req, res) => {
+    var build = {
+        id_project_status_title: 2,
+        id_project_status: req.body.id_project_status
+    }
+    db.updatestatusproject(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
 module.exports = app;
 
 Number.prototype.pad = function (size) {
