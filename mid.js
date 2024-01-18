@@ -20,7 +20,7 @@ app.use('/user', (req, res, next) => {
                 req.result = result.data
                 next()
             } else {
-                res.status(401).send(result)
+                res.status(401).send("Unauthorized")
             }
         })
     }
