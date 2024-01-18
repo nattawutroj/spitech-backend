@@ -162,7 +162,7 @@ app.delete('/join', (req, res) => {
 
 app.get('/stafflist', (req, res) => {
     console.log(req.body)
-    db.getStaff((result) => {
+    db.getStaffUser((result) => {
         console.log(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
