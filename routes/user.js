@@ -187,6 +187,7 @@ app.post('/staffos', (req, res) => {
 })
 
 app.post('/projectstafflist', (req, res) => {
+    console.log(req.body)
     var build = {
         id_project: req.body.id_project,
     }
@@ -195,6 +196,19 @@ app.post('/projectstafflist', (req, res) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
 })
+
+app.post('/projectstaff', (req, res) => {
+    var build = {
+        id_project: req.body.id_project,
+        id_project_staff_position: req.body.id_project_staff_position,
+        id_staff: req.body.id_staff
+    }
+    db.poststaff(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+}
+)
 
 app.post('/dummy', (req, res) => {
     debug(req.body.params.id_project)
