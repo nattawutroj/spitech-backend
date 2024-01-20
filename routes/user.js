@@ -4,6 +4,74 @@ var db = require('../lib/db')
 var jwt = require('../lib/jwt')
 var cyp = require('../lib/crypto')
 var cto = require('../lib/cto')
+const fs = require('fs')
+
+app.post('/upload/pdf', (req, res) => {
+    debug(req.body)
+    console.log(req.files[0]);
+    var oldPath = req.files[0].path;
+    let results = [];
+    let data = [];
+    let value = [];
+    // cut type in mimetype and then add to path
+
+
+    var newPath = 'file/pdf/' + req.files[0].filename + '.pdf';
+
+    fs.rename(oldPath, newPath, function (err) {
+        if (err) {
+            console.error('Error moving file:', err);
+            // ไม่ควรใช้ throw เพราะจะทำให้แอปหยุดทำงาน
+        } else {
+            console.log('Successfully moved to ' + newPath);
+            var build = {
+                id_project: req.body.id_project,
+                file_path: newPath
+            }
+            db.postfilepath(build, (result) => {
+
+                if (req.body.id_project_status_title == 2) {
+                    var builda = {
+                        id_project_status_title: 3,
+                        id_project_status: req.body.id_project_status
+                    }
+                    db.updatestatusproject(builda, (result) => {
+                        debug(result)
+                        result == 422 ? cto.e422(res) : cto.o200(res)
+                    })
+                }
+            })
+        }
+    });
+});
+
+app.post('/prove', (req, res) => {
+    debug(req.body)
+    if (req.body.id_project_status_title == 3) {
+        var build = {
+            id_project_status_title: 2,
+            staus_code: 19,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'ยกเลิกคำร้องโดยนักศึกษา'
+        }
+    }
+    db.provefilepath(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.get('/projectfilelist', (req, res) => {
+    console.log(req.query)
+    var build = {
+        id_project: req.query.id_project,
+    }
+    db.getfilepath(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
 
 app.post('/login', (req, res) => {
     console.log(req.body)
@@ -233,7 +301,7 @@ app.delete('/projectstaff', (req, res) => {
 )
 
 app.post('/dummy', (req, res) => {
-    debug(req.body.params.id_project)
+    debug(req)
     cto.o200(res)
 })
 app.delete('/dummy', (req, res) => {
@@ -247,6 +315,21 @@ app.put('/initalcomfirm', (req, res) => {
         id_project_status: req.body.id_project_status
     }
     db.updatestatusproject(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.put('/build', (req, res) => {
+    debug(req.body)
+    var build = {
+        id_project: req.body.id_project,
+        project_title_th: req.body.project_title_th,
+        project_title_en: req.body.project_title_en,
+        project_study_title_th: req.body.case_study_title_th,
+        project_study_title_en: req.body.case_study_title_en,
+    }
+    db.updateproject(build, (result) => {
         debug(result)
         result == 422 ? cto.e422(res) : cto.o200(res)
     })

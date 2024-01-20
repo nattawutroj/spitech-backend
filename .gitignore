@@ -131,3 +131,6 @@ dist
 
 # dir file_upload
 file_upload/
+
+# file pdf in dir file/pdf
+file/pdf/*.pdf
