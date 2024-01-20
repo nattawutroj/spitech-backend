@@ -233,7 +233,7 @@ app.delete('/projectstaff', (req, res) => {
 )
 
 app.post('/dummy', (req, res) => {
-    debug(req.body.params.id_project)
+    debug(req)
     cto.o200(res)
 })
 app.delete('/dummy', (req, res) => {
@@ -247,6 +247,21 @@ app.put('/initalcomfirm', (req, res) => {
         id_project_status: req.body.id_project_status
     }
     db.updatestatusproject(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.put('/build', (req, res) => {
+    debug(req.body)
+    var build = {
+        id_project: req.body.id_project,
+        project_title_th: req.body.project_title_th,
+        project_title_en: req.body.project_title_en,
+        project_study_title_th: req.body.case_study_title_th,
+        project_study_title_en: req.body.case_study_title_en,
+    }
+    db.updateproject(build, (result) => {
         debug(result)
         result == 422 ? cto.e422(res) : cto.o200(res)
     })
