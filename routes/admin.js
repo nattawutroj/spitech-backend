@@ -75,7 +75,7 @@ app.post('/upload/csv', (req, res) => {
 
         let data = []
         let value = []
-        
+
         var XLSX = require('xlsx')
         var workbook = XLSX.readFile(oldPath);
         var sheet_name_list = workbook.SheetNames;
@@ -91,7 +91,7 @@ app.post('/upload/csv', (req, res) => {
                         element[key] = element[key].replace('-', '')
                     }
                     else if (element[key][t] == ':' || element[key][t] == '/') {
-                        
+
                         console.log('found :  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
                         drop = true
                     }
@@ -113,7 +113,7 @@ app.post('/upload/csv', (req, res) => {
                 })
             }
             console.log('-----------------------------------')
-            
+
         });
 
         fs.unlink(req.files[0].path, (err) => {
@@ -273,4 +273,69 @@ app.delete('/staff/delete', (req, res) => {
     })
 })
 
+app.get('/reqreport', (req, res) => {
+    build = {
+        status_code: 21
+    }
+    debug(build)
+    db.getreqreport(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.get('/projectinfomation', (req, res) => {
+    // to int
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.projectinfomation(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/projectinfomation/staff', (req, res) => {
+    // console.log(req.query.id_project)
+    // to int
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.getprojectstaff(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
+app.get('/projectinfomation/student', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    // debug(build)
+    db.projectmeberinfomation(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/projectinfomation/status', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    // debug(build)
+    db.getprojectstatustitle(build, (result) => {
+        debug(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
 module.exports = app;
+
+function debug(x) {
+    console.log("\n:::::::::::::::::::::::: {{ DEBUG }} :::::::::::::::::::::::: ")
+    console.log(x)
+    console.log("::::::::::::::::::::::::: {{ END }} ::::::::::::::::::::::::: \n")
+}
