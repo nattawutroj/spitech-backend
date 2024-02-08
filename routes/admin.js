@@ -259,7 +259,6 @@ app.post('/staff/add', (req, res) => {
 })
 
 app.put('/staff/edit', (req, res) => {
-    console.log(req.body)
     db.updatestaff(req.body, (result) => {
         console.log(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
@@ -267,7 +266,6 @@ app.put('/staff/edit', (req, res) => {
 })
 
 app.delete('/staff/delete', (req, res) => {
-    console.log(req.body)
     db.delstaff(req.body, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
@@ -275,9 +273,8 @@ app.delete('/staff/delete', (req, res) => {
 
 app.get('/reqreport', (req, res) => {
     build = {
-        status_code: 21
+        status_code: req.query.status_code,
     }
-    debug(build)
     db.getreqreport(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
@@ -311,9 +308,7 @@ app.get('/projectinfomation/student', (req, res) => {
     build = {
         id_project: req.query.id_project,
     }
-    // debug(build)
     db.projectmeberinfomation(build, (result) => {
-        debug(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }
     )
@@ -323,14 +318,72 @@ app.get('/projectinfomation/status', (req, res) => {
     build = {
         id_project: req.query.id_project,
     }
-    // debug(build)
     db.getprojectstatustitle(build, (result) => {
-        debug(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }
     )
 }
 )
+
+app.post('/reqreport/prove', (req, res) => {
+
+    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4) {
+        var build = {
+            id_project_status_title: 2,
+            staus_code: 18,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    }
+    db.provefilepath(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.post('/reqreport/approve',(req,res) => {
+    if (req.body.id_project_status_title == 3) {
+        var build = {
+            id_project_status_title: 4,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอแต่งตั้งกรรมการ'
+        }
+    } else     if (req.body.id_project_status_title == 4) {
+        var build = {
+            id_project_status_title: 5,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอจัดวันสอบหัวข้อแล้ว'
+        }
+    }
+    db.provefilepath(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.get('/projectadminprocess', (req, res) => {
+    build = {
+        project_process: req.query.project_process,
+    }
+    db.Projectadminprocess(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
+app.get('/projectfilelast', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.projectfilelast(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
 
 module.exports = app;
 
