@@ -7,6 +7,82 @@ var iconv = require('iconv-lite')
 const e = require('express')
 const { count } = require('console')
 
+async function generateschedule(start, end, id_room, id_project) {
+    let data = [];
+    let date = new Date(start);
+    let enddate = new Date(end);
+    
+    while (date <= enddate) {
+        if (date.getDay() !== 0 && date.getDay() !== 6) {
+            const promises = [];
+
+            for (let i = 0; i < 10; i++) {
+                const build = {
+                    id_project: id_project,
+                    id_test_category: 1,
+                    id_room: id_room,
+                    slot: i,
+                    date: date.toISOString().split('T')[0]
+                };
+
+                const roomcheckerPromise = new Promise(resolve => {
+                    db.roomchecker(build, (results) => {
+                        resolve(results);
+                    });
+                });
+
+                const pgsPromise = new Promise(resolve => {
+                    db.pgs(build, (resultsa) => {
+                        resolve(resultsa);
+                    });
+                });
+
+                promises.push(roomcheckerPromise, pgsPromise);
+            }
+
+            const results = await Promise.all(promises);
+
+            for (let i = 0; i < results.length; i += 2) {
+                const roomcheckerResults = results[i];
+                const pgsResults = results[i + 1];
+
+                if (roomcheckerResults[0] === undefined) {
+                    data.push({
+                        date: date.toISOString().split('T')[0],
+                        slot: i / 2,
+                        id_room: id_room,
+                        condition: {
+                            roomslot: 0,
+                            teacherslot: (pgsResults[0] === undefined) ? 0 : pgsResults,
+                        },
+                        day: date.getDay()
+                    });
+                } else {
+                    data.push({
+                        date: date.toISOString().split('T')[0],
+                        slot: i / 2,
+                        id_room: id_room,
+                        condition: {
+                            roomslot: roomcheckerResults,
+                            teacherslot: 0,
+                        },
+                        day: date.getDay()
+                    });
+                }
+            }
+        }
+        date.setDate(date.getDate() + 1);
+    }
+
+    return data;
+}
+
+
+
+const checkslot = (data, slot) => {
+
+}
+
 
 
 app.post('/upload/csv', (req, res) => {
@@ -341,7 +417,7 @@ app.post('/reqreport/prove', (req, res) => {
     })
 })
 
-app.post('/reqreport/approve',(req,res) => {
+app.post('/reqreport/approve', (req, res) => {
     if (req.body.id_project_status_title == 3) {
         var build = {
             id_project_status_title: 4,
@@ -350,7 +426,7 @@ app.post('/reqreport/approve',(req,res) => {
             id_project_status: req.body.id_project_status,
             comment: 'รอแต่งตั้งกรรมการ'
         }
-    } else     if (req.body.id_project_status_title == 4) {
+    } else if (req.body.id_project_status_title == 4) {
         var build = {
             id_project_status_title: 5,
             staus_code: 25,
@@ -383,6 +459,36 @@ app.get('/projectfilelast', (req, res) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }
     )
+})
+
+app.get('/room', (req, res) => {
+    db.getroom(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.post('/room/schedule', (req, res) => {
+    console.log(req.body)
+    var build = {
+        id_project: req.body.id_project,
+        id_test_catagory: req.body.id_test_catagory,
+        id_room: req.body.id_room,
+        slot: req.body.slot,
+        date: req.body.date
+    }
+    console.log(build)
+    db.reseveroom(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/room/handle', (req, res) => {
+    let slot = generateschedule(req.query.start, req.query.end, req.query.id_room, req.query.id_project)
+    // promise
+    slot.then((slot) => {
+        res.status(200).send({ status: 'OK', code: 200, data: slot })
+    })
 })
 
 module.exports = app;
