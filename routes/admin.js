@@ -7,7 +7,7 @@ var iconv = require('iconv-lite')
 const e = require('express')
 const { count } = require('console')
 
-async function generateschedule(start, end, id_room, id_project) {
+async function generateschedule(start, end, id_room, id_project, res) {
     let data = [];
     let date = new Date(start);
     let enddate = new Date(end);
@@ -403,7 +403,7 @@ app.get('/projectinfomation/status', (req, res) => {
 
 app.post('/reqreport/prove', (req, res) => {
 
-    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4) {
+    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5) {
         var build = {
             id_project_status_title: 2,
             staus_code: 18,
@@ -433,6 +433,14 @@ app.post('/reqreport/approve', (req, res) => {
             id_project_file_paths: req.body.id_project_file_paths,
             id_project_status: req.body.id_project_status,
             comment: 'รอจัดวันสอบหัวข้อแล้ว'
+        }
+    }else if (req.body.id_project_status_title == 5) {
+        var build = {
+            id_project_status_title: 6,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอดำเนินการสอบตามตาราง'
         }
     }
     db.provefilepath(build, (result) => {
@@ -489,6 +497,32 @@ app.get('/room/handle', (req, res) => {
     slot.then((slot) => {
         res.status(200).send({ status: 'OK', code: 200, data: slot })
     })
+})
+
+app.get('/room/schedule', (req, res) => {
+    debug(req.query)
+    if(req.query.id_project_status_title == 5){
+        build = {
+            id_project: req.query.id_project,
+            id_test_category: 1
+        }
+    }
+    db.getroomschedule(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+
+app.delete('/room/schedule', (req, res) => {
+    debug(req.query)
+        build = {
+            id_schedule: req.query.id_schedule,
+        }
+    db.delsch(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
 })
 
 module.exports = app;
