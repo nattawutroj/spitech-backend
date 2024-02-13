@@ -403,7 +403,7 @@ app.get('/projectinfomation/status', (req, res) => {
 
 app.post('/reqreport/prove', (req, res) => {
 
-    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5) {
+    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
         var build = {
             id_project_status_title: 2,
             staus_code: 18,
@@ -411,6 +411,16 @@ app.post('/reqreport/prove', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: req.body.comment
         }
+    }
+    if(req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6)
+    {
+        db.delschcan(req.body.id_project, (result) => {
+            console.log("Delete Staff")
+            console.log(result)
+        })
+        db.delsch(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
     }
     db.provefilepath(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res)
@@ -442,6 +452,17 @@ app.post('/reqreport/approve', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: 'รอดำเนินการสอบตามตาราง'
         }
+    }else if (req.body.id_project_status_title == 6) {
+        var build = {
+            id_project_status_title: 7,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'สำเร็จ'
+        }
+        db.delsch(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
     }
     db.provefilepath(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res)
@@ -526,6 +547,19 @@ app.delete('/room/schedule', (req, res) => {
 })
 
 module.exports = app;
+
+app.post('/recordexam', (req, res) => {
+    build = {
+        id_project: req.body.id_project,
+        id_test_category: req.body.id_test_category,
+        status_exam: req.body.status_exam,
+        comment_exam: req.body.comment_exam
+    }
+    console.log(req.body)
+    // db.recordexam(req.body, (result) => {
+    //     result == 422 ? cto.e422(res) : cto.o200(res, result)
+    // })
+})
 
 function debug(x) {
     console.log("\n:::::::::::::::::::::::: {{ DEBUG }} :::::::::::::::::::::::: ")
