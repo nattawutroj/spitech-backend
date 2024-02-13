@@ -7,6 +7,82 @@ var iconv = require('iconv-lite')
 const e = require('express')
 const { count } = require('console')
 
+async function generateschedule(start, end, id_room, id_project, res) {
+    let data = [];
+    let date = new Date(start);
+    let enddate = new Date(end);
+    
+    while (date <= enddate) {
+        if (date.getDay() !== 0 && date.getDay() !== 6) {
+            const promises = [];
+
+            for (let i = 0; i < 10; i++) {
+                const build = {
+                    id_project: id_project,
+                    id_test_category: 1,
+                    id_room: id_room,
+                    slot: i,
+                    date: date.toISOString().split('T')[0]
+                };
+
+                const roomcheckerPromise = new Promise(resolve => {
+                    db.roomchecker(build, (results) => {
+                        resolve(results);
+                    });
+                });
+
+                const pgsPromise = new Promise(resolve => {
+                    db.pgs(build, (resultsa) => {
+                        resolve(resultsa);
+                    });
+                });
+
+                promises.push(roomcheckerPromise, pgsPromise);
+            }
+
+            const results = await Promise.all(promises);
+
+            for (let i = 0; i < results.length; i += 2) {
+                const roomcheckerResults = results[i];
+                const pgsResults = results[i + 1];
+
+                if (roomcheckerResults[0] === undefined) {
+                    data.push({
+                        date: date.toISOString().split('T')[0],
+                        slot: i / 2,
+                        id_room: id_room,
+                        condition: {
+                            roomslot: 0,
+                            teacherslot: (pgsResults[0] === undefined) ? 0 : pgsResults,
+                        },
+                        day: date.getDay()
+                    });
+                } else {
+                    data.push({
+                        date: date.toISOString().split('T')[0],
+                        slot: i / 2,
+                        id_room: id_room,
+                        condition: {
+                            roomslot: roomcheckerResults,
+                            teacherslot: 0,
+                        },
+                        day: date.getDay()
+                    });
+                }
+            }
+        }
+        date.setDate(date.getDate() + 1);
+    }
+
+    return data;
+}
+
+
+
+const checkslot = (data, slot) => {
+
+}
+
 
 
 app.post('/upload/csv', (req, res) => {
@@ -75,7 +151,7 @@ app.post('/upload/csv', (req, res) => {
 
         let data = []
         let value = []
-        
+
         var XLSX = require('xlsx')
         var workbook = XLSX.readFile(oldPath);
         var sheet_name_list = workbook.SheetNames;
@@ -91,7 +167,7 @@ app.post('/upload/csv', (req, res) => {
                         element[key] = element[key].replace('-', '')
                     }
                     else if (element[key][t] == ':' || element[key][t] == '/') {
-                        
+
                         console.log('found :  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
                         drop = true
                     }
@@ -113,7 +189,7 @@ app.post('/upload/csv', (req, res) => {
                 })
             }
             console.log('-----------------------------------')
-            
+
         });
 
         fs.unlink(req.files[0].path, (err) => {
@@ -259,7 +335,6 @@ app.post('/staff/add', (req, res) => {
 })
 
 app.put('/staff/edit', (req, res) => {
-    console.log(req.body)
     db.updatestaff(req.body, (result) => {
         console.log(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
@@ -267,10 +342,227 @@ app.put('/staff/edit', (req, res) => {
 })
 
 app.delete('/staff/delete', (req, res) => {
-    console.log(req.body)
     db.delstaff(req.body, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
 })
 
+app.get('/reqreport', (req, res) => {
+    build = {
+        status_code: req.query.status_code,
+    }
+    db.getreqreport(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.get('/projectinfomation', (req, res) => {
+    // to int
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.projectinfomation(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/projectinfomation/staff', (req, res) => {
+    // console.log(req.query.id_project)
+    // to int
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.getprojectstaff(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
+app.get('/projectinfomation/student', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.projectmeberinfomation(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/projectinfomation/status', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.getprojectstatustitle(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
+app.post('/reqreport/prove', (req, res) => {
+
+    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
+        var build = {
+            id_project_status_title: 2,
+            staus_code: 18,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    }
+    if(req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6)
+    {
+        db.delschcan(req.body.id_project, (result) => {
+            console.log("Delete Staff")
+            console.log(result)
+        })
+        db.delsch(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    }
+    db.provefilepath(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.post('/reqreport/approve', (req, res) => {
+    if (req.body.id_project_status_title == 3) {
+        var build = {
+            id_project_status_title: 4,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอแต่งตั้งกรรมการ'
+        }
+    } else if (req.body.id_project_status_title == 4) {
+        var build = {
+            id_project_status_title: 5,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอจัดวันสอบหัวข้อแล้ว'
+        }
+    }else if (req.body.id_project_status_title == 5) {
+        var build = {
+            id_project_status_title: 6,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอดำเนินการสอบตามตาราง'
+        }
+    }else if (req.body.id_project_status_title == 6) {
+        var build = {
+            id_project_status_title: 7,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'สำเร็จ'
+        }
+        db.delsch(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    }
+    db.provefilepath(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
+app.get('/projectadminprocess', (req, res) => {
+    build = {
+        project_process: req.query.project_process,
+    }
+    db.Projectadminprocess(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+}
+)
+
+app.get('/projectfilelast', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.projectfilelast(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/room', (req, res) => {
+    db.getroom(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.post('/room/schedule', (req, res) => {
+    console.log(req.body)
+    var build = {
+        id_project: req.body.id_project,
+        id_test_catagory: req.body.id_test_catagory,
+        id_room: req.body.id_room,
+        slot: req.body.slot,
+        date: req.body.date
+    }
+    console.log(build)
+    db.reseveroom(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+app.get('/room/handle', (req, res) => {
+    let slot = generateschedule(req.query.start, req.query.end, req.query.id_room, req.query.id_project)
+    // promise
+    slot.then((slot) => {
+        res.status(200).send({ status: 'OK', code: 200, data: slot })
+    })
+})
+
+app.get('/room/schedule', (req, res) => {
+    debug(req.query)
+    if(req.query.id_project_status_title == 5){
+        build = {
+            id_project: req.query.id_project,
+            id_test_category: 1
+        }
+    }
+    db.getroomschedule(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
+
+app.delete('/room/schedule', (req, res) => {
+    debug(req.query)
+        build = {
+            id_schedule: req.query.id_schedule,
+        }
+    db.delsch(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    }
+    )
+})
+
 module.exports = app;
+
+app.post('/recordexam', (req, res) => {
+    build = {
+        id_project: req.body.id_project,
+        id_test_category: req.body.id_test_category,
+        status_exam: req.body.status_exam,
+        comment_exam: req.body.comment_exam
+    }
+    console.log(req.body)
+    // db.recordexam(req.body, (result) => {
+    //     result == 422 ? cto.e422(res) : cto.o200(res, result)
+    // })
+})
+
+function debug(x) {
+    console.log("\n:::::::::::::::::::::::: {{ DEBUG }} :::::::::::::::::::::::: ")
+    console.log(x)
+    console.log("::::::::::::::::::::::::: {{ END }} ::::::::::::::::::::::::: \n")
+}
