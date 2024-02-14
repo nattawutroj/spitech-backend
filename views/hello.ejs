@@ -1,39 +1,14 @@
-<% include('../change.php'); %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- views/hello.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>ใบประเมินสอบหัวข้อแผ่น 1</title>
-
-  <style type="text/css">
-    body, td, th {
-      font-size: 19px;
-      font-family: TH SarabunPSK, TH SarabunPSK, TH SarabunPSK;
-    }
-    #apDiv1 {
-      position: absolute;
-      left: 60px;
-      top: 21px;
-      width: 120px;
-      height: 113px;
-      z-index: 1;
-    }
-    /* ... (other styles) ... */
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
 </head>
-
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-  <% include('../connectdatabase.php'); %>
-
-  <% while (your_condition) { %>
-    <% // ... your PHP code here ... %>
-    <div id="apDiv1"><img src="../image/logo.png" width="134" height="116" /></div>
-    <div id="apDiv2">
-      <table width="100%" border="0" >
-        <!-- ... (remaining HTML) ... -->
-      </table>
-    </div>
-    <!-- ... (remaining HTML) ... -->
-  <% } %>
+<body>
+    <h1>Hello, <%= name %>!</h1>
 </body>
 </html>
