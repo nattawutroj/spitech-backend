@@ -3,8 +3,6 @@ var router = express.Router();
 var db = require('../lib/db')
 var fs = require('fs')
 const path = require('path');
-const ejs = require('ejs');
-var html_to_pdf = require('html-pdf-node');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -70,21 +68,6 @@ router.get('/role', (req, res) => {
     res.status(200).send({ status: 'OK', code: 200, data: result })
   })
 })
-
-
-router.get('/pdf', async (req, res) => {
-  let options = { format: 'A4' };
-  let file = { content: "<h1>Welcome to html-pdf-node</h1>" };
-
-  html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
-    // Set the Content-Disposition header to include the file name
-    res.header('Content-Type', 'application/pdf');
-    res.header('Content-Disposition', 'attachment; filename=example.pdf');
-
-    // Send the PDF buffer back to the user
-    res.status(200).send(pdfBuffer);
-  });
-});
 
 
 module.exports = router;
