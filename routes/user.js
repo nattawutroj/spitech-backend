@@ -30,9 +30,27 @@ app.post('/upload/pdf', (req, res) => {
             }
             db.postfilepath(build, (result) => {
 
-                if (req.body.id_project_status_title == 2) {
+                if (req.body.id_project_status_title == 2 && req.body.testcat == 1) {
                     var builda = {
                         id_project_status_title: 3,
+                        id_project_status: req.body.id_project_status
+                    }
+                    db.updatestatusproject(builda, (result) => {
+                        debug(result)
+                        result == 422 ? cto.e422(res) : cto.o200(res)
+                    })
+                } else if (req.body.id_project_status_title == 7 && req.body.testcat == 2) {
+                    var builda = {
+                        id_project_status_title: 9,
+                        id_project_status: req.body.id_project_status
+                    }
+                    db.updatestatusproject(builda, (result) => {
+                        debug(result)
+                        result == 422 ? cto.e422(res) : cto.o200(res)
+                    })
+                } else if (req.body.id_project_status_title == 7 && req.body.testcat == 3) {
+                    var builda = {
+                        id_project_status_title: 13,
                         id_project_status: req.body.id_project_status
                     }
                     db.updatestatusproject(builda, (result) => {
@@ -183,7 +201,8 @@ app.post('/build', (req, res) => {
                 project_study_title_th: req.body.project_study_title_th,
                 project_study_title_en: req.body.project_study_title_en,
                 id_semester: result[0].id_semester,
-                id_student: req.result.id_student
+                id_student: req.result.id_student,
+                subject_code: req.body.subject_code,
             }
             debug(build)
             db.projectBuild(build, (result) => {
@@ -328,6 +347,7 @@ app.put('/build', (req, res) => {
         project_title_en: req.body.project_title_en,
         project_study_title_th: req.body.case_study_title_th,
         project_study_title_en: req.body.case_study_title_en,
+        subject_code: req.body.subject_code,
     }
     db.updateproject(build, (result) => {
         debug(result)
