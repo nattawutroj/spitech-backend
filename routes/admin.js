@@ -11,7 +11,7 @@ async function generateschedule(start, end, id_room, id_project, res) {
     let data = [];
     let date = new Date(start);
     let enddate = new Date(end);
-    
+
     while (date <= enddate) {
         if (date.getDay() !== 0 && date.getDay() !== 6) {
             const promises = [];
@@ -367,18 +367,37 @@ app.get('/projectinfomation', (req, res) => {
     )
 })
 
-app.get('/projectinfomation/staff', (req, res) => {
-    // console.log(req.query.id_project)
-    // to int
-    build = {
+// app.get('/projectinfomation/staff', (req, res) => {
+//     build = {
+//         id_project: req.query.id_project,
+//     }
+//     db.getprojectstaff(build, (result) => {
+//         console.log(build)
+//         console.log(result)
+//         console.log(result[0].staff)
+//         result == 422 ? cto.e422(res) : cto.o200(res, result)
+//     }
+//     )
+// }
+// )
+
+app.get('/projectinfomation/staff', async (req, res) => {
+    const build = {
         id_project: req.query.id_project,
+    };
+
+    try {
+        const [staffResult, staffosResult] = await Promise.all([db.asyncgetstaff(build), db.asyncgetstaffos(build)]);
+        console.log(staffResult, staffosResult);
+        // Handle the results or send a response to the client
+        cto.o200(res, [{ staff: staffResult, os_staff: staffosResult }]);
+    } catch (error) {
+        console.error(error);
+        // Handle the error and send an appropriate response
+        cto.e422(res);
     }
-    db.getprojectstaff(build, (result) => {
-        result == 422 ? cto.e422(res) : cto.o200(res, result)
-    }
-    )
-}
-)
+});
+
 
 app.get('/projectinfomation/student', (req, res) => {
     build = {
@@ -412,8 +431,7 @@ app.post('/reqreport/prove', (req, res) => {
             comment: req.body.comment
         }
     }
-    if(req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6)
-    {
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
         db.delschcan(req.body.id_project, (result) => {
             console.log("Delete Staff")
             console.log(result)
@@ -444,7 +462,7 @@ app.post('/reqreport/approve', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: 'รอจัดวันสอบหัวข้อแล้ว'
         }
-    }else if (req.body.id_project_status_title == 5) {
+    } else if (req.body.id_project_status_title == 5) {
         var build = {
             id_project_status_title: 6,
             staus_code: 25,
@@ -452,7 +470,7 @@ app.post('/reqreport/approve', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: 'รอดำเนินการสอบตามตาราง'
         }
-    }else if (req.body.id_project_status_title == 6) {
+    } else if (req.body.id_project_status_title == 6) {
         var build = {
             id_project_status_title: 7,
             staus_code: 25,
@@ -522,7 +540,7 @@ app.get('/room/handle', (req, res) => {
 
 app.get('/room/schedule', (req, res) => {
     debug(req.query)
-    if(req.query.id_project_status_title == 5){
+    if (req.query.id_project_status_title == 5) {
         build = {
             id_project: req.query.id_project,
             id_test_category: 1
@@ -537,9 +555,9 @@ app.get('/room/schedule', (req, res) => {
 
 app.delete('/room/schedule', (req, res) => {
     debug(req.query)
-        build = {
-            id_schedule: req.query.id_schedule,
-        }
+    build = {
+        id_schedule: req.query.id_schedule,
+    }
     db.delsch(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }

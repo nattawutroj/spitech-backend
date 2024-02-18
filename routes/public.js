@@ -70,6 +70,18 @@ router.get('/role', (req, res) => {
 })
 
 
+router.get('/boss', (req, res) => {
+  db.getboss((result) => {
+    res.status(200).send({ status: 'OK', code: 200, data: result })
+  })
+})
+
+router.get('/subject', (req, res) => {
+  db.getsubject((result) => {
+    res.status(200).send({ status: 'OK', code: 200, data: result })
+  })
+}
+)
 module.exports = router;
 
 
