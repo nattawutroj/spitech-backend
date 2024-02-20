@@ -335,6 +335,7 @@ app.post('/staff/add', (req, res) => {
 })
 
 app.put('/staff/edit', (req, res) => {
+    console.log(req.body)
     db.updatestaff(req.body, (result) => {
         console.log(result)
         result == 422 ? cto.e422(res) : cto.o200(res, result)
@@ -675,6 +676,35 @@ app.delete('/room/schedule', (req, res) => {
     )
 })
 
+app.put('/boss', (req, res) => {
+    console.log(req.body)
+    db.updateboss(req.body, (result) => {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+app.get('/semester', (req, res) => {
+    db.getsemeter((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+}
+)
+
+app.post('/semester', (req, res) => {
+    req.body.semester = parseInt(req.body.semester)
+    req.body.year = parseInt(req.body.year)
+    if(req.body.semester == 1 || req.body.semester == 2){
+        req.body.semester = req.body.semester + 1
+    } else if (req.body.semester == 3) {
+        req.body.year = req.body.year + 1
+        req.body.semester = 1
+    }
+    req.body.semester = req.body.semester.toString()
+    req.body.year = req.body.year.toString()
+    db.postsemester(req.body, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
 module.exports = app;
 
 app.post('/recordexam', (req, res) => {
