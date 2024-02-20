@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../lib/db')
 var fs = require('fs')
 const path = require('path');
+var cto = require('../lib/cto')
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -82,6 +83,44 @@ router.get('/subject', (req, res) => {
   })
 }
 )
+
+router.get('/projectinfomation/student', (req, res) => {
+  build = {
+      id_project: req.query.id_project,
+  }
+  db.projectmeberinfomation(build, (result) => {
+      result == 422 ? cto.e422(res) : cto.o200(res, result)
+  }
+  )
+})
+
+router.get('/projectinfomation/staff', async (req, res) => {
+  const build = {
+      id_project: req.query.id_project,
+  };
+
+  try {
+      const [staffResult, staffosResult] = await Promise.all([db.asyncgetstaff(build), db.asyncgetstaffos(build)]);
+      console.log(staffResult, staffosResult);
+      // Handle the results or send a response to the client
+      cto.o200(res, [{ staff: staffResult, os_staff: staffosResult }]);
+  } catch (error) {
+      console.error(error);
+      // Handle the error and send an appropriate response
+      cto.e422(res);
+  }
+});
+
+router.get('/projectinfomation', (req, res) => {
+  // to int
+  build = {
+      id_project: req.query.id_project,
+  }
+  db.projectinfomation(build, (result) => {
+      result == 422 ? cto.e422(res) : cto.o200(res, result)
+  }
+  )
+})
 module.exports = router;
 
 
