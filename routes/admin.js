@@ -693,7 +693,7 @@ app.get('/semester', (req, res) => {
 app.post('/semester', (req, res) => {
     req.body.semester = parseInt(req.body.semester)
     req.body.year = parseInt(req.body.year)
-    if(req.body.semester == 1 || req.body.semester == 2){
+    if (req.body.semester == 1 || req.body.semester == 2) {
         req.body.semester = req.body.semester + 1
     } else if (req.body.semester == 3) {
         req.body.year = req.body.year + 1
@@ -719,6 +719,144 @@ app.post('/recordexam', (req, res) => {
     //     result == 422 ? cto.e422(res) : cto.o200(res, result)
     // })
 })
+
+app.get('/nametitle', (req, res) => {
+    db.getnametitle((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/nametitle/add', (req, res) => {
+db.nametitlepost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/nametitle/edit', (req, res) => {
+console.log(req.body)
+db.updatenametitle(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/nametitle/delete', (req, res) => {
+console.log(req.body)
+db.delnametitle(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
+
+
+app.get('/subject', (req, res) => {
+    db.getsubjecta((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/subject/add', (req, res) => {
+db.subjectpost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/subject/edit', (req, res) => {
+console.log(req.body)
+db.updatesubject(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/subject/delete', (req, res) => {
+console.log(req.body)
+db.delsubject(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
+
+
+app.get('/course', (req, res) => {
+    db.getcoursea((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/course/add', (req, res) => {
+db.coursepost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/course/edit', (req, res) => {
+console.log(req.body)
+db.updatecourse(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/course/delete', (req, res) => {
+console.log(req.body)
+db.delcourse(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
+
+app.get('/major', (req, res) => {
+    db.getmajora((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/major/add', (req, res) => {
+db.majorpost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/major/edit', (req, res) => {
+console.log(req.body)
+db.updatemajor(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/major/delete', (req, res) => {
+console.log(req.body)
+db.delmajor(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
 
 function debug(x) {
     console.log("\n:::::::::::::::::::::::: {{ DEBUG }} :::::::::::::::::::::::: ")
