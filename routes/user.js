@@ -41,16 +41,16 @@ app.post('/upload/pdf', (req, res) => {
                     })
                 } else if (req.body.id_project_status_title == 7 && req.body.testcat == 2) {
                     var builda = {
-                        id_project_status_title: 9,
+                        id_project_status_title: 8,
                         id_project_status: req.body.id_project_status
                     }
                     db.updatestatusproject(builda, (result) => {
                         debug(result)
                         result == 422 ? cto.e422(res) : cto.o200(res)
                     })
-                } else if (req.body.id_project_status_title == 7 && req.body.testcat == 3) {
+                } else if ((req.body.id_project_status_title == 7 && req.body.testcat == 3) || req.body.id_project_status_title == 11) {
                     var builda = {
-                        id_project_status_title: 13,
+                        id_project_status_title: 12,
                         id_project_status: req.body.id_project_status
                     }
                     db.updatestatusproject(builda, (result) => {
