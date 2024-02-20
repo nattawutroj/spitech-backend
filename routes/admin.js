@@ -430,14 +430,32 @@ app.post('/reqreport/prove', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: req.body.comment
         }
+    } else if (req.body.id_project_status_title == 8 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10) {
+        var build = {
+            id_project_status_title: 7,
+            staus_code: 18,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    } else if (req.body.id_project_status_title == 12 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+        var build = {
+            id_project_status_title: 11,
+            staus_code: 18,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    }
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+        db.delschaa(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
     }
     if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
         db.delschcan(req.body.id_project, (result) => {
             console.log("Delete Staff")
             console.log(result)
-        })
-        db.delsch(req.body.id_project, (result) => {
-            console.log("Delete Schedule")
         })
     }
     db.provefilepath(build, (result) => {
@@ -460,7 +478,7 @@ app.post('/reqreport/approve', (req, res) => {
             staus_code: 25,
             id_project_file_paths: req.body.id_project_file_paths,
             id_project_status: req.body.id_project_status,
-            comment: 'รอจัดวันสอบหัวข้อแล้ว'
+            comment: 'รอจัดวันสอบหัวข้อ'
         }
     } else if (req.body.id_project_status_title == 5) {
         var build = {
@@ -478,10 +496,71 @@ app.post('/reqreport/approve', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: 'สำเร็จ'
         }
-        db.delsch(req.body.id_project, (result) => {
+        db.delschaa(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    } else if (req.body.id_project_status_title == 8) {
+        var build = {
+            id_project_status_title: 9,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอจัดวันสอบหกสิบ'
+        }
+    }
+    else if (req.body.id_project_status_title == 9) {
+        var build = {
+            id_project_status_title: 10,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอดำเนินการสอบตามตาราง'
+        }
+    }
+    else if (req.body.id_project_status_title == 10) {
+        var build = {
+            id_project_status_title: 11,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'สำเร็จ'
+        }
+        db.delschaa(req.body.id_project, (result) => {
             console.log("Delete Schedule")
         })
     }
+    else if (req.body.id_project_status_title == 12) {
+        var build = {
+            id_project_status_title: 13,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอจัดวันสอบร้อย'
+        }
+    }
+    else if (req.body.id_project_status_title == 13) {
+        var build = {
+            id_project_status_title: 14,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'รอดำเนินการสอบตามตาราง'
+        }
+    }
+    else if (req.body.id_project_status_title == 14) {
+        var build = {
+            id_project_status_title: 15,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'สำเร็จ'
+        }
+        db.delschaa(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    }
+
+
     db.provefilepath(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res)
     })
@@ -516,12 +595,31 @@ app.get('/room', (req, res) => {
 
 app.post('/room/schedule', (req, res) => {
     console.log(req.body)
-    var build = {
-        id_project: req.body.id_project,
-        id_test_catagory: req.body.id_test_catagory,
-        id_room: req.body.id_room,
-        slot: req.body.slot,
-        date: req.body.date
+    if (req.body.id_test_catagory == 5) {
+        var build = {
+            id_project: req.body.id_project,
+            id_test_catagory: 1,
+            id_room: req.body.id_room,
+            slot: req.body.slot,
+            date: req.body.date
+        }
+    } else if (req.body.id_test_catagory == 9) {
+        var build = {
+            id_project: req.body.id_project,
+            id_test_catagory: 2,
+            id_room: req.body.id_room,
+            slot: req.body.slot,
+            date: req.body.date
+        }
+    }
+    else if (req.body.id_test_catagory == 13) {
+        var build = {
+            id_project: req.body.id_project,
+            id_test_catagory: 3,
+            id_room: req.body.id_room,
+            slot: req.body.slot,
+            date: req.body.date
+        }
     }
     console.log(build)
     db.reseveroom(build, (result) => {
@@ -545,7 +643,18 @@ app.get('/room/schedule', (req, res) => {
             id_project: req.query.id_project,
             id_test_category: 1
         }
+    } else if (req.query.id_project_status_title == 9) {
+        build = {
+            id_project: req.query.id_project,
+            id_test_category: 2
+        }
+    } else if (req.query.id_project_status_title == 13) {
+        build = {
+            id_project: req.query.id_project,
+            id_test_category: 3
+        }
     }
+    // NOW FIX 20/02
     db.getroomschedule(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }
@@ -554,11 +663,13 @@ app.get('/room/schedule', (req, res) => {
 
 
 app.delete('/room/schedule', (req, res) => {
+    console.log(req.query)
     debug(req.query)
     build = {
         id_schedule: req.query.id_schedule,
     }
     db.delsch(build, (result) => {
+
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     }
     )
