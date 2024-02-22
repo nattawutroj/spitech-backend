@@ -858,6 +858,75 @@ db.delmajor(req.body, (result) => {
 }
 )
 
+app.get('/news', (req, res) => {
+    db.getnewsa((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/news/add', (req, res) => {
+db.newspost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/news/edit', (req, res) => {
+console.log(req.body)
+db.updatenews(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/news/delete', (req, res) => {
+console.log(req.body)
+db.delnews(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
+
+
+app.get('/roomt', (req, res) => {
+    db.getrooma((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    });
+})
+
+app.post('/roomt/add', (req, res) => {
+db.roompost(req.body, (result) => {
+    if (typeof result.detail == 'undefined') {
+        console.log(result)
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    } else {
+        res.status(422).send({ status: 'Something Worng', code: 422, action: 401 })
+    }
+})
+
+})
+
+app.put('/roomt/edit', (req, res) => {
+console.log(req.body)
+db.updateroom(req.body, (result) => {
+    console.log(result)
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+})
+
+app.delete('/roomt/delete', (req, res) => {
+console.log(req.body)
+db.delroom(req.body, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+})
+}
+)
+
 function debug(x) {
     console.log("\n:::::::::::::::::::::::: {{ DEBUG }} :::::::::::::::::::::::: ")
     console.log(x)

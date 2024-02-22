@@ -121,6 +121,12 @@ router.get('/projectinfomation', (req, res) => {
   }
   )
 })
+
+router.get('/newshome', (req, res) => {
+  db.getnewsa((result) => {
+    res.status(200).send({ status: 'OK', code: 200, data: result })
+  })
+})
 module.exports = router;
 
 
