@@ -349,10 +349,29 @@ app.delete('/staff/delete', (req, res) => {
 })
 
 app.get('/reqreport', (req, res) => {
+    debug(req.query)
     build = {
         status_code: req.query.status_code,
     }
     db.getreqreport(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.get('/reqproject', (req, res) => {
+    build = {
+    }
+    console.log("wweq")
+    db.getreqproject(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+app.get('/filehistory', (req, res) => {
+    build = {
+        id_project: req.query.id_project,
+    }
+    db.getfilehistory(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
 })
@@ -685,6 +704,13 @@ app.put('/boss', (req, res) => {
 })
 app.get('/semester', (req, res) => {
     db.getsemeter((result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+}
+)
+
+app.get('/aasemester', (req, res) => {
+    db.aagetsemeter((result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
 }
