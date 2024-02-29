@@ -127,6 +127,12 @@ router.get('/newshome', (req, res) => {
     res.status(200).send({ status: 'OK', code: 200, data: result })
   })
 })
+
+router.get('/schedule', (req, res) => {
+  db.getschedule((result) => {
+    res.status(200).send({ status: 'OK', code: 200, data: result })
+  })
+})
 module.exports = router;
 
 

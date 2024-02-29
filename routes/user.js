@@ -218,7 +218,7 @@ app.post('/build', (req, res) => {
     db.selectSemester((result) => {
         db.projectCodeBuild(result[0].id_semester, (rowCount) => {
             debug(rowCount)
-            var projectCode = result[0].year[2] + result[0].year[3] + result[0].semester + (rowCount + 1).pad(5)
+            var projectCode = result[0].year[2] + result[0].year[3] + result[0].semester + (rowCount + 1).pad(3)
             var build = {
                 id_project: projectCode,
                 project_title_th: req.body.project_title_th,

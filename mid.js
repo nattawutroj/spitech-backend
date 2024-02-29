@@ -33,6 +33,9 @@ app.use('/resources/admin', (req, res, next) => {
             if (req.result.id_role == 1) {
                 next()
             }
+            else if (req.result.id_role == 3) {
+                next()
+            }
             else {
                 cto.e401(res, { message: "permission denied" })
             }
