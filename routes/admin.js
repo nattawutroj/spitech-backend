@@ -367,6 +367,16 @@ app.get('/reqproject', (req, res) => {
     })
 })
 
+app.get('/reqproject/teacher', (req, res) => {
+    build = {
+        id_staff: req.query.id_staff,
+    }
+    db.getteacherreqproject(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
+})
+
+
 app.get('/filehistory', (req, res) => {
     build = {
         id_project: req.query.id_project,
