@@ -440,6 +440,49 @@ app.get('/projectinfomation/status', (req, res) => {
 }
 )
 
+app.post('/reqreport/provere', (req, res) => {
+
+    if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
+        var build = {
+            id_project_status_title: 2,
+            staus_code: 24,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    } else if (req.body.id_project_status_title == 8 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10) {
+        var build = {
+            id_project_status_title: 7,
+            staus_code: 24,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    } else if (req.body.id_project_status_title == 12 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+        var build = {
+            id_project_status_title: 11,
+            staus_code: 24,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
+    }
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+        db.delschaa(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    }
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
+        db.delschcan(req.body.id_project, (result) => {
+            console.log("Delete Staff")
+            console.log(result)
+        })
+    }
+    db.provefilepath(build, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res)
+    })
+})
+
 app.post('/reqreport/prove', (req, res) => {
 
     if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
