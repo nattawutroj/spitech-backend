@@ -39,6 +39,15 @@ app.post('/upload/pdf', (req, res) => {
                         debug(result)
                         result == 422 ? cto.e422(res) : cto.o200(res)
                     })
+                } else if (req.body.id_project_status_title == 27 && req.body.testcat == 1) {
+                    var builda = {
+                        id_project_status_title: 28,
+                        id_project_status: req.body.id_project_status
+                    }
+                    db.updatestatusproject(builda, (result) => {
+                        debug(result)
+                        result == 422 ? cto.e422(res) : cto.o200(res)
+                    })
                 } else if (req.body.id_project_status_title == 7 && req.body.testcat == 2) {
                     var builda = {
                         id_project_status_title: 8,
