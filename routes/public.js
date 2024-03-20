@@ -128,11 +128,40 @@ router.get('/newshome', (req, res) => {
   })
 })
 
+router.get('/fefile', (req, res) => {
+  console.log(req.query.id_project)
+  console.log("reefe")
+  build = {
+    id_project: req.query.id_project,
+  }
+  db.getfefile(build, (result) => {
+    result == 422 ? cto.e422(res) : cto.o200(res, result)
+}
+)
+})
+
 router.get('/schedule', (req, res) => {
   db.getschedule((result) => {
     res.status(200).send({ status: 'OK', code: 200, data: result })
   })
 })
+
+
+router.get('/reqproject', (req, res) => {
+  build = {
+  }
+  console.log("wwe11q")
+  db.getreqproject(build, (result) => {
+      result == 422 ? cto.e422(res) : cto.o200(res, result)
+  })
+})
+
+router.get('/aasemester', (req, res) => {
+  db.aagetsemeter((result) => {
+      result == 422 ? cto.e422(res) : cto.o200(res, result)
+  })
+}
+)
 module.exports = router;
 
 

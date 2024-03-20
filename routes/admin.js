@@ -361,7 +361,7 @@ app.get('/reqreport', (req, res) => {
 app.get('/reqproject', (req, res) => {
     build = {
     }
-    console.log("wweq")
+    console.log("wwe11q")
     db.getreqproject(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
