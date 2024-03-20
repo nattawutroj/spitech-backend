@@ -361,7 +361,7 @@ app.get('/reqreport', (req, res) => {
 app.get('/reqproject', (req, res) => {
     build = {
     }
-    console.log("wweq")
+    console.log("wwe11q")
     db.getreqproject(build, (result) => {
         result == 422 ? cto.e422(res) : cto.o200(res, result)
     })
@@ -450,7 +450,7 @@ app.get('/projectinfomation/status', (req, res) => {
 }
 )
 
-app.post('/reqreport/provere', (req, res) => {
+app.post('/reqreport/provere', (req, res) => { // API สำหรับยื่นสอบใหม่่ในช่วงเวลา
 
     if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
         var build = {
@@ -476,8 +476,16 @@ app.post('/reqreport/provere', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: req.body.comment
         }
+    } else if (req.body.id_project_status_title == 28) {
+        var build = {
+            id_project_status_title: 27,
+            staus_code: 24,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
     }
-    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14 || req.body.id_project_status_title == 28) {
         db.delschaa(req.body.id_project, (result) => {
             console.log("Delete Schedule")
         })
@@ -493,7 +501,7 @@ app.post('/reqreport/provere', (req, res) => {
     })
 })
 
-app.post('/reqreport/prove', (req, res) => {
+app.post('/reqreport/prove', (req, res) => { // API สำหรับไม่ผ่าน
 
     if (req.body.id_project_status_title == 3 || req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6) {
         var build = {
@@ -519,8 +527,16 @@ app.post('/reqreport/prove', (req, res) => {
             id_project_status: req.body.id_project_status,
             comment: req.body.comment
         }
+    } else if (req.body.id_project_status_title == 28) {
+        var build = {
+            id_project_status_title: 27,
+            staus_code: 18,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: req.body.comment
+        }
     }
-    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14) {
+    if (req.body.id_project_status_title == 4 || req.body.id_project_status_title == 5 || req.body.id_project_status_title == 6 || req.body.id_project_status_title == 9 || req.body.id_project_status_title == 10 || req.body.id_project_status_title == 13 || req.body.id_project_status_title == 14 || req.body.id_project_status_title == 28) {
         db.delschaa(req.body.id_project, (result) => {
             console.log("Delete Schedule")
         })
@@ -562,6 +578,17 @@ app.post('/reqreport/approve', (req, res) => {
             comment: 'รอดำเนินการสอบตามตาราง'
         }
     } else if (req.body.id_project_status_title == 6) {
+        var build = {
+            id_project_status_title: 27,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'อัพโหลดส่ง ทก.01 ฉบับแก้ไข'
+        }
+        db.delschaa(req.body.id_project, (result) => {
+            console.log("Delete Schedule")
+        })
+    } else if (req.body.id_project_status_title == 28) {
         var build = {
             id_project_status_title: 7,
             staus_code: 25,
@@ -631,6 +658,15 @@ app.post('/reqreport/approve', (req, res) => {
         db.delschaa(req.body.id_project, (result) => {
             console.log("Delete Schedule")
         })
+    }
+    else if (req.body.id_project_status_title == 15) {
+        var build = {
+            id_project_status_title: 17,
+            staus_code: 25,
+            id_project_file_paths: req.body.id_project_file_paths,
+            id_project_status: req.body.id_project_status,
+            comment: 'สำเร็จ'
+        }
     }
 
 
@@ -794,9 +830,9 @@ app.post('/recordexam', (req, res) => {
         comment_exam: req.body.comment_exam
     }
     console.log(req.body)
-    // db.recordexam(req.body, (result) => {
-    //     result == 422 ? cto.e422(res) : cto.o200(res, result)
-    // })
+    db.recordexam(req.body, (result) => {
+        result == 422 ? cto.e422(res) : cto.o200(res, result)
+    })
 })
 
 app.get('/nametitle', (req, res) => {
